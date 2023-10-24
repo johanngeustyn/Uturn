@@ -36,6 +36,7 @@
                         <th class="pt-0 pb-2">Brand</th>
                         <th class="pt-0 pb-2">Type</th>
                         <th class="pt-0 pb-2">Number Plate</th>
+                        <th class="pt-0 pb-2">Available</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -54,6 +55,9 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.numberPlate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.isAvailable)
                             </td>
                             <td>
                                 <a asp-action="Edit" asp-route-key="@item.key">Edit</a> |

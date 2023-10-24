@@ -19,6 +19,8 @@ namespace Uturn.Models
         public string numberPlate { get; set; } = "";
 
         public string currentLocation { get; set; } = "";
+
+        public bool isAvailable { get; set; } = true;
     }
 }
 

@@ -30,7 +30,8 @@ namespace Uturn.Controllers
                 brand = vehicle.Object.brand,
                 type = vehicle.Object.type,
                 numberPlate = vehicle.Object.numberPlate,
-                currentLocation = vehicle.Object.currentLocation
+                currentLocation = vehicle.Object.currentLocation,
+                isAvailable = vehicle.Object.isAvailable
             }).ToList();
 
             return View(vehicles);
