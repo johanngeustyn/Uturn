@@ -28,6 +28,7 @@ namespace Uturn.Controllers
             var employeeUids = tasks.Select(t => t.Object.employeeUid).Distinct().ToList();
             var locationIds = tasks.Select(t => t.Object.dropoffLocationId).Distinct().ToList();
             var vehicleIds = tasks.Select(t => t.Object.vehicleId).Distinct().ToList();
+            var ratingIds = tasks.Select(t => t.Object.ratingId).Distinct().ToList();
 
             Dictionary<string, Models.Employee> employeeLookup = new Dictionary<string, Models.Employee>();
 
@@ -65,6 +66,20 @@ namespace Uturn.Controllers
                 }
             }
 
+            Dictionary<string, Models.Rating> ratingLookup = new Dictionary<string, Models.Rating>();
+
+            // Fetch all ratings at once.
+            var ratings = await _firebaseClient.Child("ratings").OnceAsync<Models.Rating>();
+
+            // Filter and populate the dictionary.
+            foreach (var ratingObj in ratings)
+            {
+                if (ratingIds.Contains(ratingObj.Key))
+                {
+                    ratingLookup[ratingObj.Key] = ratingObj.Object;
+                }
+            }
+
             // Now for each task, I can retrieve the user, location, and vehicle data
             List<TaskViewModel> taskViewModels = new List<TaskViewModel>();
 
@@ -90,11 +105,18 @@ namespace Uturn.Controllers
                     vehicle = foundVehicle;
                 }
 
+                Models.Rating rating = null;
+                if (!string.IsNullOrEmpty(task.Object.ratingId) && ratingLookup.TryGetValue(task.Object.ratingId, out var foundRating))
+                {
+                    rating = foundRating;
+                }
+
                 var taskViewModel = new TaskViewModel
                 {
                     key = task.Key,
                     employee = employee == null ? "N/A" : $"{employee.name} {employee.surname}",
                     vehicle = vehicle == null ? "N/A" : $"{vehicle.brand} - {vehicle.model} - {vehicle.numberPlate}",
+                    rating = rating == null ? "N/A" : rating.rating, 
                     type = task.Object.type,
                     typeOfGoods = task.Object.typeOfGoods,
                     pickupLocation = task.Object.pickupLocation,

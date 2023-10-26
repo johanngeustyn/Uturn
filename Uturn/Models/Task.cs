@@ -20,6 +20,8 @@ namespace Uturn.Models
         [Required]
         public string dropoffLocationId { get; set; } = "";
 
+        public string ratingId { get; set; } = "";
+
         public string status { get; set; } = "Uploaded";
 
         public long uploadedTimestamp { get; set; } = 0;

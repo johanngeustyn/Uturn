@@ -22,6 +22,8 @@ namespace Uturn.ViewModels
         [Required]
         public string dropoffLocation { get; set; } = "";
 
+        public string rating { get; set; } = "";
+
         public string status { get; set; } = "";
 
         public string uploadedTimestamp { get; set; } = "";
